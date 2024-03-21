@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheely Good Auto Parts</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <!-- Local array to hold shopping cart items -->
+    <script>
+        cartItems = [];
+        const products = [];
+        cartTotal = 0;
+    </script>
+     
+</head>
+
+<body>
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/views/index.html">Wheely Good Auto Parts</a>
+
+      <!-- Grabs the pages needed to be displayed on the navbar -->
+      <div class="offcanvas-body" id="navbarComponents">
+        <ul class="navbar-nav list-group-horizontal">
+          <li v-for="link in links" class="navbar-nav mx-2 px-2">
+            <a 
+            class="nav-link"
+            aria-current="page" 
+            :href="link.url" 
+            :title="`${link.text} page`"
+            >{{ link.text }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Adds the offcanvas toggler button on the right side of the navbar and populates it -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Shopping Cart</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div id="cart"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <div class="container">
+    <div>
+      <p>Welcome, We Have Wheely Good Auto Parts :3</p>
+    </div>
+
+    <!-- Bare bones product card group-->
+    <div class="row row-cols-1 row-cols-md-4 g-1" id="cardProducts">
+      <div v-for="product in products" class="col">
+        <div class="card border-2 h-100">
+          <img :src= "product.img" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h4 class="card-title">{{ product.name }}</h4>
+            <h5 class="text-body-secondary">${{ product.price }}</h5>
+            <h5 class="text-body-secondary">Amount Onhand: {{ product.amount }}</h5>
+          </div>
+          <div class="card-footer border-0 bg-transparent mx-auto">
+            <a href="#" class="btn btn-primary align" @click="addCart(product.name, 1, product.price, product.img, product.partNum, product.weight, product.amount)">Add to Cart</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+    crossorigin="anonymous"></script>
+  <!-- Axios -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <!-- Vue.js -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <!-- Components -->
+  <script src="/components/navbarComponents.js"></script>
+  <script src="/components/cardProducts.js"></script>
+  <script src="/components/shoppingCart.js"></script>
+</html>

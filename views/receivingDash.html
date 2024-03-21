@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/views/index.html">Wheely Good Auto Parts</a>
+
+      <!-- Grabs the pages needed to be displayed on the navbar -->
+      <div class="offcanvas-body" id="navbarComponents">
+        <ul class="navbar-nav list-group-horizontal">
+          <li v-for="link in links" class="navbar-nav mx-2 px-2">
+            <a 
+            class="nav-link"
+            aria-current="page" 
+            :href="link.url" 
+            :title="`${link.text} page`"
+            >{{ link.text }}</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- Item and quantity text field and submit button -->
+  <div class="container" id="receivingView">
+    <div class="row">
+      <div class="col">
+        <form id="inventory">
+          <div class="input-group input-group-lg">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Item ID or Description:</span>
+            <input type="text" id="descriptor" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+          </div>
+          <div class="input-group input-group-lg">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Quantity to Add:</span>
+            <input type="text" id="quantity" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+          </div>
+          <button id="submitButton" href="#" class="btn btn-primary align" @click="insertInventory()">Insert into Inventory</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+</body>
+
+<!-- Bootstrap JavaScript Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+crossorigin="anonymous"></script>
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+crossorigin="anonymous"></script>
+<!-- Vue.js -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- Components -->
+<script src="/components/navbarComponents.js"></script>
+<script src="/components/receivingView.js"></script>
+</html>

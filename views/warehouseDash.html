@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warehouse Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/views/index.html">Wheely Good Auto Parts</a>
+
+      <!-- Grabs the pages needed to be displayed on the navbar -->
+      <div class="offcanvas-body" id="navbarComponents">
+        <ul class="navbar-nav list-group-horizontal">
+          <li v-for="link in links" class="navbar-nav mx-2 px-2">
+            <a 
+            class="nav-link"
+            aria-current="page" 
+            :href="link.url" 
+            :title="`${link.text} page`"
+            >{{ link.text }}</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+  <div class="container" id="adminView">
+    <h2>Remember to pack items carefully!</h5>
+
+    <!-- Card group to display the orders and basic information -->
+    <div class="row row-cols-1 row-cols-md-4 g-1">
+      <div v-for="order in orders" class="col">
+        <div class="card border-2 h-100">
+          <div class="card-body">
+            <h4 class="card-title">Order#: {{ order.orderId }}</h4>
+            <h4 class="card-title">Status: {{ order.status }}</h4>
+            <h5 class="text-body-secondary">{{ order.customerId }}</h5>
+            <h4 class="card-title">Packing List:</h4>
+            <div v-for="data in orderData">
+              <h5 class="text-body-secondary">Item ID: {{ data.num }}</h5>
+              <h5 class="text-body-secondary">Amount Ordered: {{ data.quantity }}</h5>
+            </div>
+          </div>
+          <div class="card-footer border-0 bg-transparent mx-auto">
+            <a href="#" class="btn btn-primary align" @click="viewOrder(order.orderId)" data-bs-toggle="modal" data-bs-target="#viewModal">View Shipping Label/Packing List</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal to display extra information of the order for the worker -->
+    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Shipping Label</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <h3 class="card-title my-2">Name: {{ modalData.customerId }}</h3>
+            <h3 class="card-title my-2">Shipping Address: {{ modalData.address }}</h3>
+            <h3 class="card-title my-2">Items:</h3>
+            <div class="row">
+              <div class="col">
+                <h5 class="text-body-secondary">Item ID:</h5>
+                <div v-for="data in orderData">
+                  <h5 class="text-body-secondary">{{ data.num }}</h5>
+                </div>
+              </div>
+              <div class="col">
+                <h5 class="text-body-secondary">Quantity:</h5>
+                <div v-for="data in orderData">
+                  <h5 class="text-body-secondary">{{ data.quantity }}</h5>
+                </div>
+              </div>
+            </div>
+            <h3 class="card-title">Total: ${{ modalData.total }}</h3>
+            <h3 class="card-title">Shipping/Handling: ${{ modalData.shipam }}</h3>
+            <input type="text" class="form-control my-2" placeholder="Invoice Note" aria-label="Invoice Note">
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="completeOrder(modalData.orderId)">Complete Order</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<!-- Bootstrap JavaScript Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+crossorigin="anonymous"></script>
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+crossorigin="anonymous"></script>
+<!-- Vue.js -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- Components -->
+<script src="/components/navbarComponents.js"></script>
+<script src="/components/adminView.js"></script>
+</html>

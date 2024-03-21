@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+
+<body>
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/views/index.html">Wheely Good Auto Parts</a>
+
+      <!-- Grabs the pages needed to be displayed on the navbar -->
+      <div class="offcanvas-body" id="navbarComponents">
+        <ul class="navbar-nav list-group-horizontal">
+          <li v-for="link in links" class="navbar-nav mx-2 px-2">
+            <a 
+            class="nav-link"
+            aria-current="page" 
+            :href="link.url" 
+            :title="`${link.text} page`"
+            >{{ link.text }}</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <div class="container">
+    <div id="toggleLogin">
+      <h2>This is the {{ pageTitle }} Login page</h2>
+
+      <!-- Radio buttons to select which type of employee is signing in -->
+      <div class="mb-3">
+        <input type="radio" id="login1" v-model="selectedLogin" value="login1">
+        <label for="login1" class="mx-2">Warehouse</label>
+
+        <input type="radio" id="login2" v-model="selectedLogin" value="login2">
+        <label for="login2" class="mx-2">Receiving</label>
+
+        <input type="radio" id="login3" v-model="selectedLogin" value="login3">
+        <label for="login3" class="mx-2">Admin</label>
+      </div>
+
+      <!-- Warehouse worker login form -->
+      <div v-show="selectedLogin === 'login1'">
+        <form @submit.prevent="login1">
+          <div class="mb-3">
+            <label for="empCred" class="form-label">Enter your Warehouse credentials</label>
+            <input type="text" class="form-control" id="empCred" v-model="empUser" required>
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="empPass" class="form-label">Password</label>
+            <input type="password" class="form-control" id="empPass" v-model="empPassword" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+
+      <!-- Receiving desk worker login form -->
+      <div v-show="selectedLogin === 'login2'">
+        <form @submit.prevent="login2">
+          <div class="mb-3">
+            <label for="empCred" class="form-label">Enter your Receiving credentials</label>
+            <input type="text" class="form-control" id="empCred" v-model="empUser" required>
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="empPass" class="form-label">Password</label>
+            <input type="password" class="form-control" id="empPass" v-model="empPassword" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+
+      <!-- Admin login form -->
+      <div v-show="selectedLogin === 'login3'">
+        <form @submit.prevent="login3">
+          <div class="mb-3" >
+            <label for="adminCred" class="form-label">Enter your Admin credentials</label>
+            <input type="text" class="form-control" id="adminCred" v-model="adminUser" required>
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="adminPass" class="form-label">Password</label>
+            <input type="password" class="form-control" id="adminPass" v-model="adminPassword" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+    crossorigin="anonymous"></script>
+  <!-- Vue.js -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <!-- Components -->
+  <script src="/components/navbarComponents.js"></script>
+  <script src="/components/toggleLogin.js"></script>
+</html>

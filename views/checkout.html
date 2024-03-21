@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <!-- Local array to hold shopping cart items -->
+    <script>
+        cartItems = [];
+        const products = [];
+        cartTotal = 0;
+    </script>
+
+</head>
+
+<body>
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/views/index.html">Wheely Good Auto Parts Checkout</a>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <div class="container" id="cartInfo">
+    <div class="row row-cols-1 row-cols-md-4 g-1">
+      <div v-for="product in cartItems" class="col">
+        <div class="card border-2 h-100">
+          <img :src= "product.img" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h4 class="card-title">{{ product.name }}</h4>
+              <h5 class="text-body-secondary">${{ product.price }}</h5>
+              <h6> Quantity: {{ product.quantity }}</h6>
+            </div>
+        </div>
+      </div>
+
+      <!-- Card that displays the total plus shipping and handeling -->
+      <div class="card border-2 h-100">
+        <div class="card-body">
+          <h3> Total + Shipping and Handeling:  ${{ cartTotal.toFixed(2) }}</h3>
+        </div>
+      </div>
+
+      <!-- Input grousp to take in user information for order -->
+      <form id="order">
+        <div class="input-group input-group-lg">
+          <span class="input-group-text" id="inputGroup-sizing-sm">First and Last Name:</span>
+          <input type="text" id="fname" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+        </div>
+        <div class="input-group input-group-lg">
+          <span class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
+          <input type="text" id="femail" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+        </div>
+        <div class="input-group input-group-lg">
+          <span class="input-group-text" id="inputGroup-sizing-sm">Address:</span>
+          <input type="text" id="faddress" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+        </div>
+        <div class="input-group input-group-lg">
+          <span class="input-group-text" id="inputGroup-sizing-sm">Card Number:</span>
+          <input type="text" id="fcard" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+        </div>
+        <div class="input-group input-group-lg">
+          <span class="input-group-text" id="inputGroup-sizing-sm">CVC:</span>
+          <input type="text" id="fnumber" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+        </div>
+    
+        <!-- Form to display valid months -->
+        <select class="form-select form-select-lg mb-3" aria-label="Expiration Month" id="month">
+          <option selected>Expiration Month</option>
+          <option value="01">January</option> 
+          <option value="02">February</option> 
+          <option value="03">March</option> 
+          <option value="04">April</option>  
+          <option value="05">May</option>  
+          <option value="06">June</option>  
+          <option value="07">July</option> 
+          <option value="08">August</option>
+          <option value="09">September</option>  
+          <option value="10">October</option> 
+          <option value="11">November</option>  
+          <option value="12">December</option> 
+        </select>
+    
+        <!-- Form to display valid years -->
+        <select class="form-select form-select-lg mb-3" aria-label="Expiration Year" id="year">
+          <option selected>Expiration Year</option>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+          <option value="2029">2029</option>
+          <option value="2030">2030</option>
+          <option value="2031">2031</option>
+          <option value="2032">2032</option>
+          <option value="2033">2033</option>
+          </select>
+        <br>
+    
+        <!-- Button to submit order -->
+        <button id="submitButton" href="#" class="btn btn-primary align" onclick="submitOrder()">Order</button>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Script to grab and save the values that were input in the text boxes -->
+  <script>
+    function submitOrder(total) {
+      order = [];
+      var name = document.getElementById("fname").value;
+      var num = document.getElementById("fcard").value;
+      var month = document.getElementById("month").value;
+      var year = document.getElementById("year").value;
+      var cvc = document.getElementById("fnumber").value;
+      var address = document.getElementById("faddress").value;
+      var email = document.getElementById("femail").value;
+
+      order.push(num);
+      order.push(name);
+      order.push(email);
+      order.push(address);
+      order.push(month);
+      order.push(year);
+
+      process(order);
+    }
+ 
+      async function process (order) {
+
+          try {
+                const response = await axios.post('http://localhost:3000/api/processOrder', order, {
+                headers: {
+                  'Content-Type': 'application/json',
+              },
+            }
+              );
+                console.log("response:", response.data);
+            } catch(error){
+                console.error("Error processing order", error);
+              }
+        }
+  </script>
+
+</body>
+
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+    crossorigin="anonymous"></script>
+  <!-- Vue.js -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <!-- Components -->
+  <script src="/components/cartInfo.js"></script>
+
+</html>

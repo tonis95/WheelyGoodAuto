@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/views/index.html">Wheely Good Auto Parts</a>
+
+      <!-- Grabs the pages needed to be displayed on the navbar -->
+      <div class="offcanvas-body" id="navbarComponents">
+        <ul class="navbar-nav list-group-horizontal">
+          <li v-for="link in links" class="navbar-nav mx-2 px-2">
+            <a 
+            class="nav-link"
+            aria-current="page" 
+            :href="link.url" 
+            :title="`${link.text} page`"
+            >{{ link.text }}</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <div class="container" id="adminView">
+
+    <!-- Shipping and Handeling Charges Changes -->
+    <div class="row">
+      <div class="col">
+        <form id="weight">
+          <div class="input-group input-group-lg">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Shipping Charge:</span>
+            <input type="text" id="shipping" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+          </div>
+
+          <div class="input-group input-group-lg">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Lower Weight</span>
+            <input type="text" id="lowerweight" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+          </div>
+
+          <div class="input-group input-group-lg">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Upper Weight</span>
+            <input type="text" id="upperweight" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+          </div>
+
+          <button id="submitButton" href="#" class="btn btn-primary align" @click="insertShipping()">Set Shipping/Handling</button>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="row mx-1">
+      <input type="text" id="dateSearch" class="filter" placeholder="Input Date, Status, or Price to Search" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+    </div>
+    
+    <!-- Bare bones order card group-->
+    <div class="row row-cols-1 row-cols-md-4 g-1">
+      <div v-for="order in orders" class="col" :key="`${order.orderId}`">
+        <div class="card border-2 h-100" :data-string="`${order.date}${order.status}${order.total}`">
+          <div class="card-body">
+            <h4 class="card-title">Order#  {{ order.orderId }}</h4>
+            <h5 class="text-body-secondary">Name: {{ order.customerId }} Address: {{ order.address }}</h5>
+            <h5 class="text-body-secondary">Total: ${{ order.total }}</h5>
+            <h5 class="text-body-secondary">Shipping/Handling: ${{ order.shipam }}</h5>
+            <h5 class="text-body-secondary">Order Date: {{ order.date }}</h5>
+          </div>
+          <div class="card-footer border-0 bg-transparent mx-auto">
+            <a href="#" class="btn btn-primary align" @click="viewOrder(order.orderId)" data-bs-toggle="modal" data-bs-target="#viewModal">View Order</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Order Information</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <h4 class="card-title">Order#  {{ modalData.orderId }}</h4>
+            <h5 class="text-body-secondary">Name: {{ modalData.customerId }} Address: {{ modalData.address }}</h5>
+            <h5 class="text-body-secondary">Email: {{ modalData.email }}   Status: {{ modalData.status }}</h5>
+            <div v-for="data in orderData">
+              <h5 class="text-body-secondary">Item ID: {{ data.num }}</h5>
+              <h5 class="text-body-secondary">Amount Ordered: {{ data.quantity }}</h5>
+            </div>
+            <h5 class="text-body-secondary">Total: ${{ modalData.total }}</h5>
+            <h5 class="text-body-secondary">Shipping/Handling: ${{ modalData.shipam }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Script for checking when the user types in the search bar -->
+  <script>
+    window.addEventListener("load", function() {
+      document.querySelector(".filter").addEventListener("keyup", function() {
+        var input = this.value.toUpperCase();
+  
+        console.log("It works!");
+  
+        document.querySelectorAll(".card").forEach(function(card) {
+          if (card.dataset.string.toUpperCase().indexOf(input) < 0) {
+            card.style.display = "none";
+          } else {
+            card.style.display = "inline-block";
+          }
+        });
+      });
+    });
+  </script>
+  
+</body>
+
+<!-- Bootstrap JavaScript Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+crossorigin="anonymous"></script>
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+crossorigin="anonymous"></script>
+<!-- Vue.js -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- Components -->
+<script src="/components/navbarComponents.js"></script>
+<script src="/components/adminView.js"></script>
+</html>
